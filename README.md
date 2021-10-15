@@ -18,14 +18,19 @@ START VIRTUAL ENV:
 ------------------------------------
 PACKAGES TO INSTALL:
   Django and file manipulation
-  #> pip3 install django
-  #> pip install xlwt			< create spreadsheets
-  #> pip install xlrd			< read spreadsheets
-  #> pip install pandas			< convert xls to html ( data analysis library )
-  #> pip install xhtml2pdf		< convert html to PDF
-  #> pip install django-crispy-forms    < convert Django models to forms
 
-Generate EXCEL and PDF: <- quotes and invoices will be geenrated using both spreadsheets and PDF
+  A. Execute 
+    #> ./install_packages
+
+  OR
+
+  B. Install them one by one
+      #> pip3 install django
+      #> pip install xlwt			< create spreadsheets
+      #> pip install xlrd			< read spreadsheets
+      #> pip install pandas			< convert xls to html ( data analysis library )
+      #> pip install xhtml2pdf		< convert html to PDF
+      #> pip install django-crispy-forms    < convert Django models to forms
 
 RECOMMENDED:
 . Add Django extension to visual studio code
