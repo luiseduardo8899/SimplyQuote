@@ -38,6 +38,15 @@ RECOMMENDED:
 
 
 ------------------------------------
+Summary to create virtual env and install required libraries:
+
+#> git clone https://github.com/luiseduardo8899/SimplyQuote.git
+#> cd SimplyQuote
+#> python3 -m venv env
+#> source env/bin/activate
+#> ./install_packages
+
+------------------------------------
 LAUNCHING DJANGO SITE / APP
 
 1.Make sure to run in virtual env
