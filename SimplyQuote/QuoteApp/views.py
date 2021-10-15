@@ -116,11 +116,11 @@ def generate_quote(request):
         form = QuoteForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
-	    try: 
+            try: 
                 last_quote = Quote.objects.latest('create_date');
                 last_id = last_quote.quote_id
-	    except Quote.DoesNotExist:
-	        last_id = 0
+            except Quote.DoesNotExist:
+                last_id = 0
             q = Quote()
             q.quote_id = last_id + 1
             q.create_date = datetime.datetime.now()
