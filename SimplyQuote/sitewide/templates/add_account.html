@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block head_title %}{% trans "Create a Quote " %}{% endblock %}
+
+{% load crispy_forms_tags %}
+{% block content %}
+    {% if form.errors %}
+        <div class="alert alert-danger" role="alert">
+            This is a danger alert-check it out
+        </div>
+    {% endif %}
+
+    <h1>Account registration</h1>
+
+    <form action="{% url 'saveaccount' %}" method="POST">
+        {% csrf_token %}
+        {% if message %}
+            <div class="alert alert-success" role="alert">
+                Account successfully registered
+            </div>
+        {% endif %}
+        {{form|crispy}}
+        <button type="submit" class="btn btn-primary">save</button>
+    </form>
+
+{% endblock %}

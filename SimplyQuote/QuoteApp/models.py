@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 import datetime
+from django.contrib.auth.models import User
 
 
 #START TAXABLE_IDS
@@ -49,15 +50,16 @@ TERM_IDS = (
 
 
 class SalesPerson(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     salesid = models.IntegerField(default=0)                #unique identifier
-    name =  models.CharField(max_length=200)                # first name
-    last_name =  models.CharField(max_length=200, default="")           #last name
+    #name =  models.CharField(max_length=200)                # first name
+    #last_name =  models.CharField(max_length=200, default="")           #last name
     phone_number =  models.CharField(max_length=200, default="")        #phone number
     create_date = models.DateTimeField('date published')
-    email = models.EmailField(max_length=254, default="")               #email
+    #email = models.EmailField(max_length=254, default="")               #email
 
     def __str__(self):
-        return "SalesPerson# %s" % self.name
+        return "SalesPerson# %s" % self.user.get_full_name 
 
 #Customer Account model
 class Account(models.Model):
@@ -118,6 +120,7 @@ class PO(models.Model):
     account =  models.ManyToManyField(Account)  #After creating object,  use PO.add(<Account pointer>) # Account to which this PO is sent to
     state = models.IntegerField(choices=STATE_IDS, default=CREATED) 
     create_date = models.DateTimeField('date published')
+    print(create_date)
     sales_person = models.ManyToManyField(SalesPerson)     #Sales Person, use PO.add(<SalesPerson pointer>)
     validity = models.IntegerField(default=30) #Number of days the quote is valid
     po_url = models.URLField(max_length=200)   #URL to PO file

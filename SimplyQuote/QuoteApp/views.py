@@ -1,13 +1,16 @@
 import datetime
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, HttpRequest
 from django.template import loader
 from django.http import Http404
 from django.utils.decorators import method_decorator
+from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
 from django.urls import reverse
 from random import *
-from .forms import QuoteForm
+from .forms import QuoteForm, CustomUserCreationForm, form_Account
 import json
 from django.http import JsonResponse
 from QuoteApp.models import SalesPerson
@@ -184,9 +187,111 @@ def view_quote(request, id):
     accounts = quote.account.all()
     account_name = accounts[0].company_name
     products = quote.product.all()
-    total = products[0].list_price * quote.discount * quote.quantity
+    total = products[0].list_price * quote.discount * quote.quantity #le quite un * que tenia al inicio
     return render(request, "view_quote.html", {'quote':quote, 'sales_person_name':sales_person_name, 'account_name':account_name, 'product':products[0], 'total':total })
 
 def view_all_quotes(request):
     quotes  = Quote.objects.all()
     return render(request, "view_all_quotes.html", {'quotes':quotes })
+
+#Added by Marlon
+def registro(request):
+    data = { 'form': CustomUserCreationForm()}
+
+    if request.method == 'POST':
+        formulario = CustomUserCreationForm(data = request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            user = authenticate(username=formulario.cleaned_data["username"], password=formulario.cleaned_data["password1"])
+            login(request, user)
+            messages.success(request, "You have successfully registered")
+            return redirect(to="login")
+        data["form"] = formulario
+    return render(request, 'registration/registro.html', data)
+
+'''
+class wiew_form_Account(HttpRequest):
+
+    def index(request):
+        account = form_Account()
+        return render(request, "add_account.html", {"form":account})
+
+    def process_form(request):
+        print('Al menos comienza! #####################################################>')
+        if request.method == 'POST':
+            account = form_Account(request.POST)
+            # check whether it's valid:
+            print('Al menos comienza! ======================================================>')
+            if account.is_valid():
+                try: 
+                    last_account = Account.objects.latest('create_date');
+                    last_id = last_account.account_id
+                except Account.DoesNotExist:
+                    last_id = 0
+                q = Account()
+                q.account_id = last_id + 1
+                q.create_date = datetime.datetime.now()
+            
+                q.company_name = account.cleaned_data['company_name']
+                q.main_contact = account.cleaned_data['main_contact']
+                q.email = account.cleaned_data['email']
+                print('SE GUARDA!', q)
+            
+                q.save()
+
+                return HttpResponseRedirect('saveaccount/')
+                #return render(request, "add_account.html", {"form":account, "message":'Ok'})
+
+            else:
+                print("FORM ERRORS:\n\t")
+                print(account.errors)
+        else:
+            account = form_Account()
+            print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+        return render(request, "add_account.html", {"form":account, "message":'Ok'})'''
+        
+
+
+
+class wiew_form_Account(HttpRequest):
+
+    def index(request):
+        account = form_Account()
+        return render(request, "add_account.html", {"form":account})
+
+    def process_form(request):
+        account = form_Account(request.POST)
+        # check whether it's valid:
+        if account.is_valid():
+            try: 
+                last_account = Account.objects.latest('create_date');
+                last_id = last_account.account_id
+            except Account.DoesNotExist:
+                last_id = 0
+            q = Account()
+            q.account_id = last_id + 1
+            q.create_date = datetime.datetime.now()
+            q.company_name = account.cleaned_data['company_name']
+            q.main_contact = account.cleaned_data['main_contact']
+            q.email = account.cleaned_data['email']
+            
+            q.save()
+            account = form_Account()
+        else:
+            print("FORM ERRORS:\n\t")
+            print(account.errors)
+        
+        return render(request, "add_account.html", {"form":account, "message":'Ok'})
+
+
+
+
+
+
+
+
+
+
+
+
+
