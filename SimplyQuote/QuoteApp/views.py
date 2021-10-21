@@ -209,49 +209,7 @@ def registro(request):
         data["form"] = formulario
     return render(request, 'registration/registro.html', data)
 
-'''
-class wiew_form_Account(HttpRequest):
-
-    def index(request):
-        account = form_Account()
-        return render(request, "add_account.html", {"form":account})
-
-    def process_form(request):
-        print('Al menos comienza! #####################################################>')
-        if request.method == 'POST':
-            account = form_Account(request.POST)
-            # check whether it's valid:
-            print('Al menos comienza! ======================================================>')
-            if account.is_valid():
-                try: 
-                    last_account = Account.objects.latest('create_date');
-                    last_id = last_account.account_id
-                except Account.DoesNotExist:
-                    last_id = 0
-                q = Account()
-                q.account_id = last_id + 1
-                q.create_date = datetime.datetime.now()
-            
-                q.company_name = account.cleaned_data['company_name']
-                q.main_contact = account.cleaned_data['main_contact']
-                q.email = account.cleaned_data['email']
-                print('SE GUARDA!', q)
-            
-                q.save()
-
-                return HttpResponseRedirect('saveaccount/')
-                #return render(request, "add_account.html", {"form":account, "message":'Ok'})
-
-            else:
-                print("FORM ERRORS:\n\t")
-                print(account.errors)
-        else:
-            account = form_Account()
-            print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
-        return render(request, "add_account.html", {"form":account, "message":'Ok'})'''
-        
-
-
+  
 
 class wiew_form_Account(HttpRequest):
 
